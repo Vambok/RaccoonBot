@@ -1,7 +1,7 @@
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const config = require("./config2.json");
+const config = require("./config.json");
 var customResponse = require(config.customPath);
 var citations = require(config.citationsPath);
 var data = require(config.dataPath);
