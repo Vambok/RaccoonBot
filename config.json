@@ -1,8 +1,8 @@
 {
-	"launcher" : "node bot2.js",
+	"launcher" : "node bot.js",
 	"prefix" : "!",
 	"cooldown" : 20,
-	"token" : "Mjg5MDU3OTM2OTcyNDQ3NzQ0.C6G1zg.sFVeOVYr1CG1Yev8ePtAt2Qr6WQ",
+	"token" : "",
 	"customPath" : "./customResponses.json",
 	"dataPath" : "./thinkings.json",
 	"citationsPath" : "./citationsModiie.json",
