@@ -40,94 +40,123 @@ bot.on("message", function(message){
 		commande=commande.slice(config.prefix.length).toLowerCase();
 		let args = message.content.split(" ").slice(1);
 		var effect;
-		if(commande === "help"){effect = function(){
-			message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. *("+message.author.username+")*");
-//			message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. (Pour ajouter une citation : !addCitation [auteur] [citation] ou : !addModiie [citation]) *("+message.author.username+")*");
-		};} else if(commande === "twerk" || commande === "twerker"){effect = function(){
-			message.channel.sendMessage(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]+" *("+message.author.username+")*");
-//			message.channel.sendFile(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]);
-		};} else if(commande === "danse" || commande === "danser" || commande === "modidanse" || commande === "modiiedanse" || commande === "dance" || commande === "modidance" || commande === "modiiedance"){effect = function(){
-			message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286560860392914944/danse_zboub.gif *("+message.author.username+")*");
-		};} else if(commande === "mange" || commande === "amande" || commande === "modimange" || commande === "modiiemange" || commande === "manger" || commande === "yerk" || commande === "modiyerk" || commande === "modiieyerk"){effect = function(){
-			message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/293147877960712192/bloggif_5846fffd2c174.gif *("+message.author.username+")*");
-		};} else if(commande === "say" || commande === "meme" || commande === "parler" || commande === "parle"){effect = function(){
-//			var raccoonMemes = ["C'est la faute à "+message.channel.members.get("139095058212323328").user,"Nique trunks :neutral_face:","ok d'accord :thinking:"];
-			var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
-			message.channel.sendMessage(config.say[modiieNum]);
-		};} else if(commande === "octo" || commande === "decoupeocto" || commande === "decoupephoque"){effect = function(){
-			message.channel.sendMessage("<:phoque1:290592305516118016>:knife:<:phoque2:290592247420813313>:knife:<:phoque3:290592353981431810>");
-		};} else if(commande === "bot"){effect = function(){
-			message.channel.sendMessage("Je suis codé en Javascript avec discord.js (pour Node.js), "+message.author.username);
-		};} else if(commande === "addmodiie"){effect = function(){
-			addCitation(args.join(" "),"Modiie",message);
-		};} else if(commande === "addcitation"){effect = function(){
-			addCitation(args.slice(1).join(" "),args[0],message);
-		};} else if(commande === "dessin" || commande === "dessins" || commande === "modidessin" || commande === "modiiedessin"){effect = function(){
-			var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*imgsDessin.length));
-			message.channel.sendFile(config.imgs+"dessins/"+imgsDessin[modiieNum]);
-		};} else if(commande === "botengreve" || commande === "botgreve" || commande === "greve" || commande === "grevedubot"){
-			message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286527362055536641/modiie_-_middle_finger.gif *("+message.author.username+")*");
-		} else if(commande === "thinking"){
-			message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[Math.floor(Math.random()*imgsThinking.length)]);
-			deletion(message);
-		} else if(commande === "ah" || commande === "zrtah"){
-			message.channel.sendFile(config.imgs+"ah.png");
-			deletion(message);
-		} else if(commande === "sob" || commande === "pleurebb" || commande === "pleure"){
-			message.channel.sendFile(config.imgs+"pleurebb.png");
-			deletion(message);
-		} else if(commande === "joy" || commande === "pleurepas" || commande === "pleurepasbb"){
-			message.channel.sendFile(config.imgs+"pleurepasbb.png");
-			deletion(message);
-		} else if(commande === "facepalm" || commande === "face_palm"){
-			message.channel.sendFile(config.imgs+"facepalm.png");
-			deletion(message);
-		} else if(message.author.id === "152901292090458113"){
-			if(commande === "allthinkings"){
-				message.channel.sendFile(config.imgs+"allthinking.png");
-			} else if(commande === "thinkings" || commande === "nbthinking" || commande === "nbthinkings"){
-				nbthinking = 0;
-				nbthinkingreac = 0;
-				messagesAnalyses = 0;
-				message.channel.sendMessage("Début du scan...").then(function(messageLog){
-					actualMessage = messageLog;
-					if(!data.hasOwnProperty(actualMessage.channel.id)){data[actualMessage.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
-					compteurThinking(actualMessage);
-				},function(raison){console.log(raison);}).catch(console.error);
-			} else if(commande === "toto"){
-				message.channel.fetchMessage("289157068550569984").then(function(x){
-					console.log(x);
-					var test = ": ";
-					x.reactions.forEach(function(y){
-						test += y.emoji.id+" "+y.emoji.identifier+" "+y.emoji.name+" "+y.emoji.count+" ";
-					});
-					x.channel.sendMessage("ce message contient "+test);
-				},function(raison){console.log(raison);}).catch(console.error);
-				message.channel.fetchMessage("280450419975651338").then(function(x){
-					console.log(x);
-					var test = ": ";
-					x.reactions.forEach(function(y){
-						test += y.emoji.id+" "+y.emoji.identifier+" "+y.emoji.name+" "+y.emoji.count+" ";
-					});
-					x.channel.sendMessage("ce message contient "+test);
-				},function(raison){console.log(raison);}).catch(console.error);
-			} else if(commande === "cite" || commande === "modiie"){
-				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*citations.length));
-				if(citations[modiieNum]){
-					message.channel.sendMessage("Citation n°"+(modiieNum+1)+" : \""+citations[modiieNum].citation+"\" "+citations[modiieNum].author+citations[modiieNum].date+" *("+message.author.username+")*");
-				} else {
-					message.reply("Il n'y a pas "+(modiieNum+1)+" citations, ne fais pas l'enfant.");
-				}
-			} else if(commande === "refresh"){
-				if(arg[0]==="D"){
-					imgsDessin = fs.readdirSync(config.imgs+"dessins/");
-				} else {
-					imgsThinking = fs.readdirSync(config.imgs+"thinkings/");
-				}
-			} else {
-				return;
-			}
-			deletion(message);
+		switch(commande){
+			case "help":effect = function(){
+				message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. *("+message.author.username+")*");
+	//			message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. (Pour ajouter une citation : !addCitation [auteur] [citation] ou : !addModiie [citation]) *("+message.author.username+")*");
+				deletion(message);};break;
+			case "bot":effect = function(){ 
+				message.channel.sendMessage("Je suis codé en Javascript avec discord.js (pour Node.js), "+message.author.username);
+				deletion(message);};break;
+
+			case "twerk":case "twerker":effect = function(){
+				message.channel.sendMessage(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]+" *("+message.author.username+")*");
+	//			message.channel.sendFile(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]);
+				deletion(message);};break;
+			case "danse":case "danser":case "modidanse":case "modiiedanse":case "dance":case "modidance":case "modiiedance":effect = function(){
+				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286560860392914944/danse_zboub.gif *("+message.author.username+")*");
+				deletion(message);};break;
+			case "mange":case "amande":case "modimange":case "modiiemange":case "manger":case "yerk":case "modiyerk":case "modiieyerk":effect = function(){
+				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/293147877960712192/bloggif_5846fffd2c174.gif *("+message.author.username+")*");
+				deletion(message);};break;
+			case "aled":case "oskour":case "oscour":case "oskours":case "oscours":case "oskourt":case "oscourt":effect = function(){
+				message.channel.sendMessage("http://i.imgur.com/4MmX4zh.gif *("+message.author.username+")*");
+				deletion(message);};break;
+			case "botengreve":case "botgreve":case "greve":case "grevedubot":effect = function(){
+				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286527362055536641/modiie_-_middle_finger.gif *("+message.author.username+")*");
+				};break;
+			case "onesided":case "monologue":case "alone":case "vent":effect = function(){
+				message.channel.sendMessage("https://www.youtube.com/watch?v=gBvbOEXKApE <:Kappa:289121214339743744>");
+				deletion(message);};break;
+			case "dessin":case "dessins":case "modidessin":case "modiiedessin":effect = function(){
+				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*imgsDessin.length));
+				message.channel.sendFile(config.imgs+"dessins/"+imgsDessin[modiieNum]);
+				};break;
+
+			case "say":case "meme":case "parler":case "parle":effect = function(){
+	//			var raccoonMemes = ["C'est la faute à "+message.channel.members.get("139095058212323328").user,"Nique trunks :neutral_face:","ok d'accord :thinking:"];
+				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
+				message.channel.sendMessage(config.say[modiieNum]);
+				deletion(message);};break;
+			case "addmodiie":effect = function(){
+				addCitation(args.join(" "),"Modiie",message);
+				deletion(message);};break;
+			case "addcitation":effect = function(){
+				addCitation(args.slice(1).join(" "),args[0],message);
+				deletion(message);};break;
+
+			case "octo":case "decoupeocto":case "decoupephoque":
+				message.channel.sendMessage("<:phoque1:290592305516118016>:knife:<:phoque2:290592247420813313>:knife:<:phoque3:290592353981431810>");
+				deletion(message);break;
+			case "thinking":
+				message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[Math.floor(Math.random()*imgsThinking.length)]);
+				deletion(message);break;
+			case "ah":case "zrtah":
+				message.channel.sendFile(config.imgs+"ah.png");
+				deletion(message);break;
+			case "sob":case "pleurebb":case "pleure":
+				message.channel.sendFile(config.imgs+"pleurebb.png");
+				deletion(message);break;
+			case "joy":case "pleurepas":case "pleurepasbb":
+				message.channel.sendFile(config.imgs+"pleurepasbb.png");
+				deletion(message);break;
+			case "facepalm":case "face_palm":
+				message.channel.sendFile(config.imgs+"facepalm.png");
+				deletion(message);break;
+			case "reboot":case "modireboot":case "modiiereboot":
+				message.channel.sendFile(config.imgs+"modiReboot.png");
+				deletion(message);break;
+			case "issou":case "risitas":
+				message.channel.sendFile(config.imgs+"issou.png");
+				deletion(message);break;
+			default:if(message.author.id === "152901292090458113"){switch(commande){
+				case "allthinkings":
+					message.channel.sendFile(config.imgs+"allthinking.png");
+					break;
+				case "thinkings":case "nbthinking":case "nbthinkings":
+					nbthinking = 0;
+					nbthinkingreac = 0;
+					messagesAnalyses = 0;
+					message.channel.sendMessage("Début du scan...").then(function(messageLog){
+						actualMessage = messageLog;
+						if(!data.hasOwnProperty(actualMessage.channel.id)){data[actualMessage.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
+						compteurThinking(actualMessage);
+					},function(raison){console.log(raison);}).catch(console.error);
+					break;
+				case "toto":
+					message.channel.fetchMessage("289157068550569984").then(function(x){
+						console.log(x);
+						var test = ": ";
+						x.reactions.forEach(function(y){
+							test += y.emoji.id+" "+y.emoji.identifier+" "+y.emoji.name+" "+y.emoji.count+" ";
+						});
+						x.channel.sendMessage("ce message contient "+test);
+					},function(raison){console.log(raison);}).catch(console.error);
+					message.channel.fetchMessage("280450419975651338").then(function(x){
+						console.log(x);
+						var test = ": ";
+						x.reactions.forEach(function(y){
+							test += y.emoji.id+" "+y.emoji.identifier+" "+y.emoji.name+" "+y.emoji.count+" ";
+						});
+						x.channel.sendMessage("ce message contient "+test);
+					},function(raison){console.log(raison);}).catch(console.error);
+					break;
+				case "cite":case "modiie":
+					var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*citations.length));
+					if(citations[modiieNum]){
+						message.channel.sendMessage("Citation n°"+(modiieNum+1)+" : \""+citations[modiieNum].citation+"\" "+citations[modiieNum].author+citations[modiieNum].date+" *("+message.author.username+")*");
+					}else{
+						message.reply("Il n'y a pas "+(modiieNum+1)+" citations, ne fais pas l'enfant.");
+					}break;
+				case "refresh":
+					if(args[0]==="D"){
+						imgsDessin = fs.readdirSync(config.imgs+"dessins/");
+					}else{
+						imgsThinking = fs.readdirSync(config.imgs+"thinkings/");
+					}break;
+				default:
+					return;
+			}deletion(message);}
 		}
 		if(effect){
 			var d = new Date();
@@ -142,8 +171,8 @@ bot.on("message", function(message){
 						setTimeout(function(){messageLog.delete();warning=false;},cooldown-d+config.cooldown*1000);
 					},function(raison){console.log(raison);}).catch(console.error);
 				}
+				deletion(message);
 			}
-			deletion(message);
 		}
 	}
 });
