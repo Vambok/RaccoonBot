@@ -59,8 +59,11 @@ bot.on("message", function(message){
 			case "mange":case "amande":case "modimange":case "modiiemange":case "manger":case "yerk":case "modiyerk":case "modiieyerk":effect = function(){
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/293147877960712192/bloggif_5846fffd2c174.gif *("+message.author.username+")*");
 				deletion(message);};break;
-			case "aled":case "oskour":case "oscour":case "oskours":case "oscours":case "oskourt":case "oscourt":effect = function(){
-				message.channel.sendMessage("http://i.imgur.com/4MmX4zh.gif *("+message.author.username+")*");
+			case "aled":effect = function(){
+				message.channel.sendMessage("https://giphy.com/gifs/cat-fire-rescue-phJ6eMRFYI6CQ *("+message.author.username+")*");
+				deletion(message);};break;
+			case "oskour":case "oscour":case "oskours":case "oscours":case "oskourt":case "oscourt":effect = function(){
+				message.channel.sendMessage("https://giphy.com/gifs/gene-tierney-leave-her-to-heaven-esB20S2G29w1G *("+message.author.username+")*");
 				deletion(message);};break;
 			case "botengreve":case "botgreve":case "greve":case "grevedubot":effect = function(){
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286527362055536641/modiie_-_middle_finger.gif *("+message.author.username+")*");
@@ -88,6 +91,12 @@ bot.on("message", function(message){
 			case "octo":case "decoupeocto":case "decoupephoque":
 				message.channel.sendMessage("<:phoque1:290592305516118016>:knife:<:phoque2:290592247420813313>:knife:<:phoque3:290592353981431810>");
 				deletion(message);break;
+			case "fuzhyon":case "decoupefuzhyon":case "decoupelapin":
+				message.channel.sendFile(config.imgs+"J2Lapin0.png");
+				deletion(message);break;
+			case "tetefuzhyon":case "tetelapin":case "rabbithead":
+				message.channel.sendFile(config.imgs+"tetedelapin.png");
+				deletion(message);break;
 			case "thinking":
 				message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[Math.floor(Math.random()*imgsThinking.length)]);
 				deletion(message);break;
@@ -101,13 +110,26 @@ bot.on("message", function(message){
 				message.channel.sendFile(config.imgs+"pleurepasbb.png");
 				deletion(message);break;
 			case "facepalm":case "face_palm":
-				message.channel.sendFile(config.imgs+"facepalm.png");
+				if(Math.random()>0.5){
+					message.channel.sendFile(config.imgs+"fp.png");
+				}else{
+					message.channel.sendFile(config.imgs+"facepalm.png");
+				}
+				deletion(message);break;
+			case "pasmarrant":case "unamused":case "notfunny":
+				message.channel.sendFile(config.imgs+"pasmarrant.png");
+				deletion(message);break;
+			case "unsub":case "desub":case "goprolo":
+				message.channel.sendFile(config.imgs+"unsub.png");
 				deletion(message);break;
 			case "reboot":case "modireboot":case "modiiereboot":
 				message.channel.sendFile(config.imgs+"modiReboot.png");
 				deletion(message);break;
 			case "issou":case "risitas":
 				message.channel.sendFile(config.imgs+"issou.png");
+				deletion(message);break;
+			case "notlikethis":case "nlt":
+				message.channel.sendFile(config.imgs+"notlikethis.png");
 				deletion(message);break;
 			default:if(message.author.id === "152901292090458113"){switch(commande){
 				case "allthinkings":
