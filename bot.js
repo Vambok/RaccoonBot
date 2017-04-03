@@ -9,25 +9,17 @@ var warning = false;
 var cooldown = 0;
 var nbthinking = 0;
 var nbthinkingreac = 0;
-var actualMessage;
+var actualMessage = null;
 var messagesAnalyses = 0;
-//var rp = require(config.rpPath);
-//var stuff = require(config.stuffPath);
 var fs = require('fs');
 var imgsThinking = fs.readdirSync(config.imgs+"thinkings/");
 var imgsDessin = fs.readdirSync(config.imgs+"dessins/");
-//var stuffs = [[]];
 
 bot.on("ready",function(){
 	fs.writeFile(config.dataPath.replace('.json','_backup.json'), JSON.stringify(data), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.customPath.replace('.json','_backup.json'), JSON.stringify(customResponse), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.citationsPath.replace('.json','_backup.json'), JSON.stringify(citations), function (err){if(err){return console.log(err);}});
 	console.log("Ready!");
-/*	fs.readFile('datas.txt', (err, data) => {
-			if (err) throw err;
-			console.log("The file was read!");
-			data.toString('utf8').split("\r\n").forEach(function(x){var arr = x.split(" ");stuffs[arr[0]] = [parseInt(arr[1])||0,arr[2]||"",arr[3]||""];console.log(arr[0]);});
-		});*/
 });
 bot.on("guildMemberAdd",function(member){
 	let guild = member.guild;
@@ -41,109 +33,152 @@ bot.on("message", function(message){
 		let args = message.content.split(" ").slice(1);
 		var effect;
 		switch(commande){
-			case "help":effect = function(){
-				message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. *("+message.author.username+")*");
-	//			message.channel.sendMessage("Avec un "+config.prefix+" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. (Pour ajouter une citation : !addCitation [auteur] [citation] ou : !addModiie [citation]) *("+message.author.username+")*");
-				deletion(message);};break;
-			case "bot":effect = function(){ 
+//commandesbotbalise
+			case "help"://%"Avec un "${config.prefix}" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous. La commande ${config.prefix}help admet maintenant un paramètre permettant d'obtenir plus de détails en MP (1 : liste complète, 2 : + les alias de chaque commande, 3 : + description de chaque commande) *(${actualMessage.author.username})*"
+				createHelp(message,(args[0] ? parseInt(args[0]-1) : -1));
+				deletion(message);break;
+			case "bot"://%"Je suis codé en Javascript avec discord.js, ${actualMessage.author.username}"//%
 				message.channel.sendMessage("Je suis codé en Javascript avec discord.js (pour Node.js), "+message.author.username);
-				deletion(message);};break;
+				deletion(message);break;
 
-			case "twerk":case "twerker":effect = function(){
+			case "twerk":case "twerker":effect = function(){//%[gif de twerk de robot aléatoire]//%
 				message.channel.sendMessage(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]+" *("+message.author.username+")*");
 	//			message.channel.sendFile(config.twerkGifs[Math.floor(Math.random()*config.twerkGifs.length)]);
 				deletion(message);};break;
-			case "danse":case "danser":case "modidanse":case "modiiedanse":case "dance":case "modidance":case "modiiedance":effect = function(){
+			case "danse":case "danser":case "modidanse":case "modiiedanse":case "dance":case "modidance":case "modiiedance":effect = function(){//%[gif de la danse du zboub par Modiie]//%
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286560860392914944/danse_zboub.gif *("+message.author.username+")*");
 				deletion(message);};break;
-			case "mange":case "amande":case "modimange":case "modiiemange":case "manger":case "yerk":case "modiyerk":case "modiieyerk":effect = function(){
+			case "mange":case "amande":case "modimange":case "modiiemange":case "manger":case "yerk":case "modiyerk":case "modiieyerk":effect = function(){//%[gif de l'amande amère par Modiie]//%
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/293147877960712192/bloggif_5846fffd2c174.gif *("+message.author.username+")*");
 				deletion(message);};break;
-			case "aled":effect = function(){
+			case "aled":effect = function(){//%[gif de chaton appellant à l'aide]//%
 				message.channel.sendMessage("https://giphy.com/gifs/cat-fire-rescue-phJ6eMRFYI6CQ *("+message.author.username+")*");
-				deletion(message);};break;
-			case "oskour":case "oscour":case "oskours":case "oscours":case "oskourt":case "oscourt":effect = function(){
+				};break;
+			case "oskour":case "oscour":case "oskours":case "oscours":case "oskourt":case "oscourt":effect = function(){//%[gif de personne se noyant appellant à l'aide]//%
 				message.channel.sendMessage("https://giphy.com/gifs/gene-tierney-leave-her-to-heaven-esB20S2G29w1G *("+message.author.username+")*");
-				deletion(message);};break;
-			case "botengreve":case "botgreve":case "greve":case "grevedubot":effect = function(){
+				};break;
+			case "botengreve":case "botgreve":case "greve":case "grevedubot":effect = function(){//%[gif du doigt d'honneur par Modiie]//%
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/286527362055536641/modiie_-_middle_finger.gif *("+message.author.username+")*");
 				};break;
-			case "onesided":case "monologue":case "alone":case "vent":effect = function(){
+			case "onesided":case "monologue":case "alone":case "vent":effect = function(){//%[extrait vidéo représentant un dialogue de sourds]//%
 				message.channel.sendMessage("https://www.youtube.com/watch?v=gBvbOEXKApE <:Kappa:289121214339743744>");
 				deletion(message);};break;
-			case "dessin":case "dessins":case "modidessin":case "modiiedessin":effect = function(){
+			case "dessin":case "dessins":case "modidessin":case "modiiedessin":effect = function(){//%[dessin aléatoire de Modiie] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*imgsDessin.length));
 				message.channel.sendFile(config.imgs+"dessins/"+imgsDessin[modiieNum]);
 				};break;
+			case "unsub":case "desub":case "goprolo"://%[dessin unsub par Octophoque]//%
+				message.channel.sendFile(config.imgs+"unsub.png");
+				deletion(message);break;
+			case "pave":case "pavé":case "pavecesar":case "pavécesar":case "pavecésar":case "pavécésar":case "tldr"://%[dessin de pavé par Cow]//%
+				message.channel.sendFile(config.imgs+"pave.png");
+				deletion(message);break;
 
-			case "say":case "meme":case "parler":case "parle":effect = function(){
-	//			var raccoonMemes = ["C'est la faute à "+message.channel.members.get("139095058212323328").user,"Nique trunks :neutral_face:","ok d'accord :thinking:"];
+			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmis : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
 				message.channel.sendMessage(config.say[modiieNum]);
 				deletion(message);};break;
-			case "addmodiie":effect = function(){
+			case "addmodiie":effect = function(){//%[ajoute le texte en paramètre aux citations de Modiie] (utilisation : ${config.prefix}addModiie citation)//%
 				addCitation(args.join(" "),"Modiie",message);
 				deletion(message);};break;
-			case "addcitation":effect = function(){
+			case "addcitation":effect = function(){//%[ajoute le texte en paramètre aux citations de l'auteur (nommé, sans espace dans son nom, **avant** le texte de la citation)] (utilisation : ${config.prefix}addCitation auteur citation)//%
 				addCitation(args.slice(1).join(" "),args[0],message);
 				deletion(message);};break;
 
-			case "octo":case "decoupeocto":case "decoupephoque":
-				message.channel.sendMessage("<:phoque1:290592305516118016>:knife:<:phoque2:290592247420813313>:knife:<:phoque3:290592353981431810>");
+			case "octo":case "decoupeocto":case "decoupephoque":case "decoupeoctophoque":case "découpeocto":case "découpephoque":case "découpeoctophoque"://%[gif découpage de phoque par Cow]//%
+				message.channel.sendFile(config.imgs+"octo_coupe.gif");
 				deletion(message);break;
-			case "fuzhyon":case "decoupefuzhyon":case "decoupelapin":
-				message.channel.sendFile(config.imgs+"J2Lapin0.png");
+			case "repareocto":case "reparephoque":case "repareoctophoque":case "répareocto":case "réparephoque":case "répareoctophoque":case "recolleocto":case "recollephoque":case "recolleoctophoque"://%[gif du phoque recousu par Cow]//%
+				message.channel.sendFile(config.imgs+"reparocto.gif");
 				deletion(message);break;
-			case "tetefuzhyon":case "tetelapin":case "rabbithead":
+			case "fuzhyon":case "decoupefuzhyon":case "decoupelapin":case "découpefuzhyon":case "découpelapin"://%[émote du lapin découpé par Cow]//%
+				message.channel.sendMessage("<:lapin:293503592298446848>");
+				deletion(message);break;
+			case "misty":case "talent":case "mistycat":case "mistychat":case "boubou"://%[dessin de chat par Misty] (un 2 en paramètre affichera l'autre chat, un 3 la vache)//%
+				switch(args[0]){
+					case "2":
+						message.channel.sendFile(config.imgs+"miaou.png");
+						break;
+					case "3":
+						message.channel.sendFile(config.imgs+"meuh.png");
+						break;
+					default:
+						message.channel.sendFile(config.imgs+"talent.png");
+				}
+				deletion(message);break;
+			case "fritte7":case "frite":case "frites":case "fritte":case "frittes"://%[dessin de Fritte7 par Misty] (un 2 en paramètre affichera la maxi_frite)//%
+				switch(args[0]){
+					case "2":
+						message.channel.sendFile(config.imgs+"Maxi_frite.png");
+						break;
+					default:
+						message.channel.sendFile(config.imgs+"CapFritte.png");
+				}
+				deletion(message);break;
+			case "tetefuzhyon":case "tetelapin":case "rabbithead"://%[émote de la tête de lapin coupée par Cow]//%
 				message.channel.sendFile(config.imgs+"tetedelapin.png");
 				deletion(message);break;
-			case "thinking":
-				message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[Math.floor(Math.random()*imgsThinking.length)]);
+			case "thinking"://%[une émote thinking parmis les ${imgsThinking.length} disponibles]//%
+				var modiieNum = (args[0] ? parseInt(args[0]) : Math.floor(Math.random()*(imgsThinking.length+1)))-1;
+				if(modiieNum<0){
+					message.channel.sendMessage(":thinking:");
+				}else{
+					message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[modiieNum]);
+				}
 				deletion(message);break;
-			case "ah":case "zrtah":
+			case "ah":case "zrtah"://%[émote Ah de Denis Brognart]//%
 				message.channel.sendFile(config.imgs+"ah.png");
 				deletion(message);break;
-			case "sob":case "pleurebb":case "pleure":
+			case "sob":case "pleurebb":case "pleure"://%[émote pleurebb par Octophoque]//%
 				message.channel.sendFile(config.imgs+"pleurebb.png");
 				deletion(message);break;
-			case "joy":case "pleurepas":case "pleurepasbb":
+			case "joy":case "pleurepas":case "pleurepasbb"://%[émote pleurepasbb par Octophoque]//%
 				message.channel.sendFile(config.imgs+"pleurepasbb.png");
 				deletion(message);break;
-			case "facepalm":case "face_palm":
+			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmis les facepalm de Cow et d'Octo]//%
 				if(Math.random()>0.5){
 					message.channel.sendFile(config.imgs+"fp.png");
 				}else{
 					message.channel.sendFile(config.imgs+"facepalm.png");
 				}
 				deletion(message);break;
-			case "pasmarrant":case "unamused":case "notfunny":
+			case "pasmarrant":case "unamused":case "notfunny"://%[dessin ...unamused d'Octo]//%
 				message.channel.sendFile(config.imgs+"pasmarrant.png");
 				deletion(message);break;
-			case "unsub":case "desub":case "goprolo":
-				message.channel.sendFile(config.imgs+"unsub.png");
+			case "zboub":case "zbub":case "zbubzbub":case "zbub_zbub"://%[dessin de souris zbub_zbub par Misty] (un 2 en paramètre affichera celle avec une bulle, un 3 celle qui pète, un 4 celle qui pète sans texte)//%
+				switch(args[0]){
+					case "2":
+						message.channel.sendFile(config.imgs+"zbub_zbub2.png");
+						break;
+					case "3":
+						message.channel.sendFile(config.imgs+"zbub_v2.png");
+						break;
+					case "4":
+						message.channel.sendFile(config.imgs+"zbub_v3.png");
+						break;
+					default:
+						message.channel.sendFile(config.imgs+"zbub_zbub.png");
+				}
 				deletion(message);break;
-			case "reboot":case "modireboot":case "modiiereboot":
+			case "reboot":case "modireboot":case "modiiereboot"://%[émote Modiie reboot]//%
 				message.channel.sendFile(config.imgs+"modiReboot.png");
 				deletion(message);break;
-			case "issou":case "risitas":
+			case "issou":case "risitas"://%[émote issou de la chaine Twitch Pantoufl]//%
 				message.channel.sendFile(config.imgs+"issou.png");
 				deletion(message);break;
-			case "notlikethis":case "nlt":
+			case "notlikethis":case "nlt"://%[émote NotLikeThis de Twitch]//%
 				message.channel.sendFile(config.imgs+"notlikethis.png");
 				deletion(message);break;
+			case "chaton":case "chat":case "potitchat":case "potit_chat"://%[émote de potit chat]//%
+				message.channel.sendFile(config.imgs+"chaton.png");
+				deletion(message);break;
+//commandesbotbalise
 			default:if(message.author.id === "152901292090458113"){switch(commande){
 				case "allthinkings":
 					message.channel.sendFile(config.imgs+"allthinking.png");
 					break;
 				case "thinkings":case "nbthinking":case "nbthinkings":
-					nbthinking = 0;
-					nbthinkingreac = 0;
-					messagesAnalyses = 0;
-					message.channel.sendMessage("Début du scan...").then(function(messageLog){
-						actualMessage = messageLog;
-						if(!data.hasOwnProperty(actualMessage.channel.id)){data[actualMessage.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
-						compteurThinking(actualMessage);
-					},function(raison){console.log(raison);}).catch(console.error);
+					message.channel.sendMessage("Début du scan...").then(function(messageLog){compteurThinking(messageLog);},function(raison){console.log(raison);}).catch(console.error);
 					break;
 				case "toto":
 					message.channel.fetchMessage("289157068550569984").then(function(x){
@@ -170,6 +205,12 @@ bot.on("message", function(message){
 					}else{
 						message.reply("Il n'y a pas "+(modiieNum+1)+" citations, ne fais pas l'enfant.");
 					}break;
+				case "delete":case "erase":case "suppr":if(args[0]){
+					message.channel.fetchMessage(args[0]).then(function(cible){
+						console.log("DELETED "+cible.author.username+"'s message: "+cible.content);
+						cible.delete();
+					},function(raison){console.log(raison);}).catch(console.error);}
+					break;
 				case "refresh":
 					if(args[0]==="D"){
 						imgsDessin = fs.readdirSync(config.imgs+"dessins/");
@@ -210,28 +251,37 @@ function addCitation(citation,author,messageSource){
 }
 
 function compteurThinking(message){
-	message.channel.fetchMessages({before:message.id,limit:100}).then(function(messages){
-		if(messages.size > 0){
-			if(messages.has(data[actualMessage.channel.id].lastMessageId)){
-				var keys = messages.keyArray();
-				for(var i=0;i<keys.length;i++){
-					if(keys[i]==data[actualMessage.channel.id].lastMessageId){
-						messagesAnalyses+=i+1;
-						returnThinkings();
-					} else {
-						cptThInMsg(messages.get(keys[i]));
+	if(!actualMessage){
+		nbthinking = 0;
+		nbthinkingreac = 0;
+		messagesAnalyses = 0;
+		actualMessage = message;
+		if(!data.hasOwnProperty(actualMessage.channel.id)){data[actualMessage.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
+		message.channel.fetchMessages({before:message.id,limit:100}).then(function(messages){
+			if(messages.size > 0){
+				if(messages.has(data[actualMessage.channel.id].lastMessageId)){
+					var keys = messages.keyArray();
+					for(var i=0;i<keys.length;i++){
+						if(keys[i]==data[actualMessage.channel.id].lastMessageId){
+							messagesAnalyses+=i+1;
+							returnThinkings();
+						} else {
+							cptThInMsg(messages.get(keys[i]));
+						}
 					}
+				} else {
+					messages.forEach(cptThInMsg);
+					messagesAnalyses+=messages.size;
+					actualMessage.edit(messagesAnalyses+" messages scannés...");
+					compteurThinking(messages.last());
 				}
 			} else {
-				messages.forEach(cptThInMsg);
-				messagesAnalyses+=messages.size;
-				actualMessage.edit(messagesAnalyses+" messages scannés...");
-				compteurThinking(messages.last());
+				returnThinkings();
 			}
-		} else {
-			returnThinkings();
-		}
-	},function(raison){console.log(raison);}).catch(console.error);
+		},function(raison){console.log(raison);}).catch(console.error);
+	} else {
+		message.edit("Désolé je suis en pleine introspection, veuillez réessayer dans quelques secondes.");
+	}
 }
 function cptThInMsg(message){
 	nbthinking += message.content.split("🤔").length + message.content.split(":thinking:").length - 2;
@@ -245,14 +295,60 @@ function returnThinkings(){
 	data[channelId].lastMessageId = actualMessage.id;
 	actualMessage.edit("Le channel "+actualMessage.channel.name+" contient "+data[channelId].nbMessages+" messages et "+data[channelId].nbThinking+" :thinking:");
 	fs.writeFile(config.dataPath, JSON.stringify(data), function (err){if(err){return console.log(err);}});
+	actualMessage = null;
+}
+
+function createHelp(message,param){
+	if(param<0){
+		message.channel.sendMessage("Avec un \""+config.prefix+"\" je peux danser, twerker, réfléchir, vous montrer des dessins et parler comme vous !\r\nLa commande "+config.prefix+"help admet maintenant un paramètre permettant d'obtenir plus de détails en MP (1 : liste complète, 2 : + les alias de chaque commande, 3 : + description de chaque commande) *("+message.author.username+")*");
+	} else if(!actualMessage){
+		messagesAnalyses = param;
+		actualMessage = message;
+		fs.readFile('bot2.js', (err, data) => {if (err) throw err;
+			console.log("The file was read!");
+			var helpText = [""];
+			var indice = 0;
+			data.toString('utf8').split("//commandesbotbalise")[1].split("\r\n\t\t\tcase \"").slice(1).forEach(function(x){
+				var aliases = [];
+				var arr = x.split("\":case \"");
+				for(var i=0;i<arr.length-1;i++){
+					aliases.push(arr[i]);
+				}
+				arr = arr[arr.length-1].split("\":");
+				aliases.push(arr[0]);
+				var addedtext = config.prefix+aliases[0];
+				if(messagesAnalyses>0){
+					addedtext += (aliases.length>1 ? " (ou "+aliases[1] : "");
+					for(var i=2;i<aliases.length;i++){addedtext += ", "+aliases[i];}
+					addedtext += (aliases.length>1 ? ")" : "") + ((arr[1].indexOf("//%")>-1 && messagesAnalyses>1) ? " : "+eval("`"+arr[1].split("//%")[1]+"`")+"\r\n" : "\r\n");
+				} else {
+					addedtext += ", ";
+				}
+				if(helpText[indice].length + addedtext.length < 2001){
+					helpText[indice] += addedtext;
+				} else {
+					if(messagesAnalyses==0){helpText[indice] = helpText[indice].slice(0,-2);}
+					indice++;
+					helpText[indice] = addedtext;
+				}
+			});
+			if(messagesAnalyses==0){helpText[indice] = helpText[indice].slice(0,-2);}
+			for(var i=0;i<helpText.length;i++){
+				actualMessage.author.sendMessage(helpText[i]);
+			}
+			actualMessage = null;
+		});
+	} else {
+		message.author.sendMessage("Désolé je suis en pleine introspection, veuillez réessayer dans quelques secondes.");
+	}
 }
 
 function httpGet(theUrl,premiermess){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
 	xmlHttp.setRequestHeader("Authorization","Bot "+config.token);
-    xmlHttp.send({"after":premiermess,"limit":100});
-    return xmlHttp.responseText;
+	xmlHttp.send({"after":premiermess,"limit":100});
+	return xmlHttp.responseText;
 }
 
 bot.login(config.token);
