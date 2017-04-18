@@ -19,7 +19,7 @@ bot.on("ready",function(){
 	fs.writeFile(config.dataPath.replace('.json','_backup.json'), JSON.stringify(data), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.customPath.replace('.json','_backup.json'), JSON.stringify(customResponse), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.citationsPath.replace('.json','_backup.json'), JSON.stringify(citations), function (err){if(err){return console.log(err);}});
-	console.log("Ready!");
+	console.log(" Ready!");
 });
 bot.on("guildMemberAdd",function(member){
 	let guild = member.guild;
@@ -74,7 +74,7 @@ bot.on("message", function(message){
 				message.channel.sendFile(config.imgs+"pave.png");
 				deletion(message);break;
 
-			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmis : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
+			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmi : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
 				message.channel.sendMessage(config.say[modiieNum]);
 				deletion(message);};break;
@@ -118,13 +118,16 @@ bot.on("message", function(message){
 			case "tetefuzhyon":case "tetelapin":case "rabbithead"://%[émote de la tête de lapin coupée par Cow]//%
 				message.channel.sendFile(config.imgs+"tetedelapin.png");
 				deletion(message);break;
-			case "thinking"://%[une émote thinking parmis les ${imgsThinking.length} disponibles]//%
+			case "thinking"://%[une émote thinking parmi les ${imgsThinking.length} disponibles]//%
 				var modiieNum = (args[0] ? parseInt(args[0]) : Math.floor(Math.random()*(imgsThinking.length+1)))-1;
 				if(modiieNum<0){
 					message.channel.sendMessage(":thinking:");
 				}else{
 					message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[modiieNum]);
 				}
+				deletion(message);break;
+			case "piece":case "monnaie":case "euro":case "thinkingeuro":case "thinkeuro":case "ratoneuro":case "euroraton"://%[euro-thinking de Konoker]//%
+				message.channel.sendFile(config.imgs+"thinkings/Prototype.png");
 				deletion(message);break;
 			case "ah":case "zrtah"://%[émote Ah de Denis Brognart]//%
 				message.channel.sendFile(config.imgs+"ah.png");
@@ -135,7 +138,7 @@ bot.on("message", function(message){
 			case "joy":case "pleurepas":case "pleurepasbb"://%[émote pleurepasbb par Octophoque]//%
 				message.channel.sendFile(config.imgs+"pleurepasbb.png");
 				deletion(message);break;
-			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmis les facepalm de Cow et d'Octo]//%
+			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmi les facepalm de Cow et d'Octo]//%
 				if(Math.random()>0.5){
 					message.channel.sendFile(config.imgs+"fp.png");
 				}else{
@@ -178,7 +181,15 @@ bot.on("message", function(message){
 					message.channel.sendFile(config.imgs+"allthinking.png");
 					break;
 				case "thinkings":case "nbthinking":case "nbthinkings":
-					message.channel.sendMessage("Début du scan...").then(function(messageLog){compteurThinking(messageLog);},function(raison){console.log(raison);}).catch(console.error);
+					if(!actualMessage){
+						nbthinking = 0;
+						nbthinkingreac = 0;
+						messagesAnalyses = 0;
+						if(!data.hasOwnProperty(message.channel.id)){data[message.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
+						message.channel.sendMessage("Début du scan...").then(function(messageLog){actualMessage=messageLog;compteurThinking(messageLog);},function(raison){console.log(raison);}).catch(console.error);
+					} else {
+						message.channel.sendMessage("Désolé je suis en pleine introspection, veuillez réessayer dans quelques secondes.");
+					}
 					break;
 				case "toto":
 					message.channel.fetchMessage("289157068550569984").then(function(x){
@@ -251,37 +262,28 @@ function addCitation(citation,author,messageSource){
 }
 
 function compteurThinking(message){
-	if(!actualMessage){
-		nbthinking = 0;
-		nbthinkingreac = 0;
-		messagesAnalyses = 0;
-		actualMessage = message;
-		if(!data.hasOwnProperty(actualMessage.channel.id)){data[actualMessage.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
-		message.channel.fetchMessages({before:message.id,limit:100}).then(function(messages){
-			if(messages.size > 0){
-				if(messages.has(data[actualMessage.channel.id].lastMessageId)){
-					var keys = messages.keyArray();
-					for(var i=0;i<keys.length;i++){
-						if(keys[i]==data[actualMessage.channel.id].lastMessageId){
-							messagesAnalyses+=i+1;
-							returnThinkings();
-						} else {
-							cptThInMsg(messages.get(keys[i]));
-						}
+	message.channel.fetchMessages({before:message.id,limit:100}).then(function(messages){
+		if(messages.size > 0){
+			if(messages.has(data[actualMessage.channel.id].lastMessageId)){
+				var keys = messages.keyArray();
+				for(var i=0;i<keys.length;i++){
+					if(keys[i]==data[actualMessage.channel.id].lastMessageId){
+						messagesAnalyses+=i+1;
+						returnThinkings();
+					} else {
+						cptThInMsg(messages.get(keys[i]));
 					}
-				} else {
-					messages.forEach(cptThInMsg);
-					messagesAnalyses+=messages.size;
-					actualMessage.edit(messagesAnalyses+" messages scannés...");
-					compteurThinking(messages.last());
 				}
 			} else {
-				returnThinkings();
+				messages.forEach(cptThInMsg);
+				messagesAnalyses+=messages.size;
+				actualMessage.edit(messagesAnalyses+" messages scannés...");
+				compteurThinking(messages.last());
 			}
-		},function(raison){console.log(raison);}).catch(console.error);
-	} else {
-		message.edit("Désolé je suis en pleine introspection, veuillez réessayer dans quelques secondes.");
-	}
+		} else {
+			returnThinkings();
+		}
+	},function(raison){console.log(raison);}).catch(console.error);
 }
 function cptThInMsg(message){
 	nbthinking += message.content.split("🤔").length + message.content.split(":thinking:").length - 2;
