@@ -19,7 +19,8 @@ bot.on("ready",function(){
 	fs.writeFile(config.dataPath.replace('.json','_backup.json'), JSON.stringify(data), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.customPath.replace('.json','_backup.json'), JSON.stringify(customResponse), function (err){if(err){return console.log(err);}});
 	fs.writeFile(config.citationsPath.replace('.json','_backup.json'), JSON.stringify(citations), function (err){if(err){return console.log(err);}});
-	console.log(" Ready!");
+	var d = new Date();
+	console.log(d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+" Ready!");
 });
 bot.on("guildMemberAdd",function(member){
 	let guild = member.guild;
@@ -251,7 +252,8 @@ bot.on("message", function(message){
 	}
 });
 function deletion(message){
-	console.log(message.author.username+": "+message.content);
+	var d = new Date();
+	console.log(d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+" "+message.author.username+": "+message.content);
 	message.delete();
 }
 function addCitation(citation,author,messageSource){
