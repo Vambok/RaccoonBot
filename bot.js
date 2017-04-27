@@ -68,12 +68,24 @@ bot.on("message", function(message){
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*imgsDessin.length));
 				message.channel.sendFile(config.imgs+"dessins/"+imgsDessin[modiieNum]);
 				};break;
-			case "unsub":case "desub":case "goprolo"://%[dessin unsub par Octophoque]//%
+			case "unsub":case "desub":case "goprolo":effect = function(){//%[dessin unsub par Octophoque]//%
 				message.channel.sendFile(config.imgs+"unsub.png");
-				deletion(message);break;
-			case "pave":case "pavé":case "pavecesar":case "pavécesar":case "pavecésar":case "pavécésar":case "tldr"://%[dessin de pavé par Cow]//%
+				};break;
+			case "pave":case "pavé":case "pavecesar":case "pavécesar":case "pavecésar":case "pavécésar":case "tldr":effect = function(){//%[dessin de pavé par Cow]//%
 				message.channel.sendFile(config.imgs+"pave.png");
-				deletion(message);break;
+				deletion(message);};break;
+			case "votemodiie":case "votemodiiie":case "votezmodiie":case "votezmodiiie":case "votermodiie":case "votermodiiie":effect = function(){//%[affiche de campagne de Modiie]//%
+				message.channel.sendFile(config.imgs+"votezModiie.png");
+				deletion(message);};break;
+			case "modialien":case "alienmodiie":case "ufodiie":case "foreheadmodiie":effect = function(){//%[alien Modiie par Cow]//%
+				message.channel.sendFile(config.imgs+"MODIIESANSFONDFAITDUSKIDEFOND.png");
+				deletion(message);};break;
+			case "modillumine":case "saintemodiie":case "modiiangel":effect = function(){//%[sainte Modiie par Cow]//%
+				message.channel.sendFile(config.imgs+"MODIILLUMINEE.png");
+				deletion(message);};break;
+			case "modiiegame":case "playmodiie":case "raccoonplaysyou":case "raccoonplaysmodiie":case "racoonplaysyou":case "racoonplaysmodiie":effect = function(){//%[gif RacoonPlaysYou par Konoker]//%
+				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/304273330540642305/Racoon_plays_you.gif *("+message.author.username+")*");
+				deletion(message);};break;
 
 			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmi : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
@@ -127,9 +139,16 @@ bot.on("message", function(message){
 					message.channel.sendFile(config.imgs+"thinkings/"+imgsThinking[modiieNum]);
 				}
 				deletion(message);break;
-			case "piece":case "monnaie":case "euro":case "thinkingeuro":case "thinkeuro":case "ratoneuro":case "euroraton"://%[euro-thinking de Konoker]//%
-				message.channel.sendFile(config.imgs+"thinkings/Prototype.png");
-				deletion(message);break;
+			case "pof":case "piece":case "coin":case "pileouface":case "pileface":case "monnaie":case "euro":case "thinkingeuro":case "thinkeuro":case "ratoneuro":case "euroraton"://%[euro-thinking (pile) de Konoker ou euro-ratonie (face) de Vambok, à probabilités égales]//%
+				var modiieNum = Math.random();
+				if(modiieNum<0.475){
+					message.channel.sendFile(config.imgs+"pile.png");
+				}else if(modiieNum<0.95){
+					message.channel.sendFile(config.imgs+"face.png");
+				}else{
+					message.channel.sendFile(config.imgs+"tranche.png");
+				}
+				break;
 			case "ah":case "zrtah"://%[émote Ah de Denis Brognart]//%
 				message.channel.sendFile(config.imgs+"ah.png");
 				deletion(message);break;
@@ -139,14 +158,20 @@ bot.on("message", function(message){
 			case "joy":case "pleurepas":case "pleurepasbb"://%[émote pleurepasbb par Octophoque]//%
 				message.channel.sendFile(config.imgs+"pleurepasbb.png");
 				deletion(message);break;
-			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmi les facepalm de Cow et d'Octo]//%
+			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmi les facepalm de Cow et d'Octophoque]//%
 				if(Math.random()>0.5){
 					message.channel.sendFile(config.imgs+"fp.png");
 				}else{
 					message.channel.sendFile(config.imgs+"facepalm.png");
 				}
 				deletion(message);break;
-			case "pasmarrant":case "unamused":case "notfunny"://%[dessin ...unamused d'Octo]//%
+			case "rage":case "jpp":case "enerve"://%[émote énervée par Cow]//%
+				message.channel.sendFile(config.imgs+"jpp.png");
+				deletion(message);break;
+			case "roue":case "cartwheel":case "acrobate":case "acrobatie"://%[émote roue par Octophoque]//%
+				message.channel.sendFile(config.imgs+"roue.png");
+				deletion(message);break;
+			case "pasmarrant":case "unamused":case "notfunny"://%[dessin ...unamused par Octophoque]//%
 				message.channel.sendFile(config.imgs+"pasmarrant.png");
 				deletion(message);break;
 			case "zboub":case "zbub":case "zbubzbub":case "zbub_zbub"://%[dessin de souris zbub_zbub par Misty] (un 2 en paramètre affichera celle avec une bulle, un 3 celle qui pète, un 4 celle qui pète sans texte)//%
@@ -163,6 +188,9 @@ bot.on("message", function(message){
 					default:
 						message.channel.sendFile(config.imgs+"zbub_zbub.png");
 				}
+				deletion(message);break;
+			case "cow":case "vache":case "tetecow":case "cowhead":case "tetevache"://%[dessin de vache par Cow]//%
+				message.channel.sendFile(config.imgs+"cow.png");
 				deletion(message);break;
 			case "reboot":case "modireboot":case "modiiereboot"://%[émote Modiie reboot]//%
 				message.channel.sendFile(config.imgs+"modiReboot.png");
