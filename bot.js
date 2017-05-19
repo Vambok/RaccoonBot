@@ -86,6 +86,9 @@ bot.on("message", function(message){
 			case "modiiegame":case "playmodiie":case "raccoonplaysyou":case "raccoonplaysmodiie":case "racoonplaysyou":case "racoonplaysmodiie":effect = function(){//%[gif RacoonPlaysYou par Konoker]//%
 				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/304273330540642305/Racoon_plays_you.gif *("+message.author.username+")*");
 				deletion(message);};break;
+			case "france":case "fronse":case "fronce":case "carte":case "map":case "cartefrance":case "cartefronce":case "cartefronse":effect = function(){//%[carte de la Fronse par Fritte7 et RakWraithraiserJahad]//%
+				message.channel.sendMessage("https://cdn.discordapp.com/attachments/224158736573399040/314157035799314432/fronse.png *("+message.author.username+")*");
+				deletion(message);};break;
 
 			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmi : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
@@ -206,7 +209,7 @@ bot.on("message", function(message){
 			case "chaton":case "chat":case "potitchat":case "potit_chat"://%[émote de potit chat]//%
 				message.channel.sendFile(config.imgs+"chaton.png");
 				deletion(message);break;
-			case "pig":case "cochon":case "pighero":case "herocochon"://%[émote cochon]//%
+			case "pig":case "cochon":case "pighero":case "herocochon"://%[émote cochon par Fritte7]//%
 				message.channel.sendFile(config.imgs+((Math.random()<0.9) ? "pigHero.png" : "pigHeroGlasses.png"));
 				deletion(message);break;
 //commandesbotbalise
