@@ -92,8 +92,8 @@ bot.on("message", function(message){
 
 			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmi : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
-				if(modiieNum==26){
-					var smileyList = [":thinking:","<:Kappa:289121214339743744>",":sob:",":joy:",":nauseated_face:","<:malaise:304775433768009728>",":facepalm:",":smirk:",":slight_smile:",":neutral_face:",":stuck_out_tongue_winking_eye:",":flushed:",":rofl:","<:modiRage:226775322979205120>"];
+				if(modiieNum==25){
+					var smileyList = [":thinking:","<:Kappa:289121214339743744>",":sob:",":joy:",":nauseated_face:","<:malaise:304775433768009728>",":facepalm:",":smirk:",":slight_smile:",":neutral_face:",":stuck_out_tongue_winking_eye:",":flushed:",":rofl:",":rage:"];
 					modiieNum = Math.floor(Math.random()*smileyList.length);
 					message.channel.sendMessage(config.say[26]+" "+smileyList[modiieNum]);
 				}else{
