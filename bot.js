@@ -89,7 +89,13 @@ bot.on("message", function(message){
 
 			case "say":case "meme":case "parler":case "parle":effect = function(){//%[phrase aléatoire parmi : "${config.say.join("\", \"")}"] (le numéro voulu peut être précisé en paramètre)//%
 				var modiieNum = (args[0] ? (parseInt(args[0]) - 1) : Math.floor(Math.random()*config.say.length));
-				message.channel.sendMessage(config.say[modiieNum]);
+				if(modiieNum==26){
+					var smileyList = [":thinking:","<:Kappa:289121214339743744>",":sob:",":joy:",":nauseated_face:","<:malaise:304775433768009728>",":facepalm:",":smirk:",":slight_smile:",":neutral_face:",":stuck_out_tongue_winking_eye:",":flushed:",":rofl:","<:modiRage:226775322979205120>"];
+					modiieNum = Math.floor(Math.random()*smileyList.length);
+					message.channel.sendMessage(config.say[26]+" "+smileyList[modiieNum]);
+				}else{
+					message.channel.sendMessage(config.say[modiieNum]);
+				}
 				deletion(message);};break;
 			case "addmodiie":effect = function(){//%[ajoute le texte en paramètre aux citations de Modiie] (utilisation : ${config.prefix}addModiie citation)//%
 				addCitation(args.join(" "),"Modiie",message);
@@ -159,11 +165,7 @@ bot.on("message", function(message){
 				message.channel.sendFile(config.imgs+"pleurepasbb.png");
 				deletion(message);break;
 			case "facepalm":case "face_palm":case "fp"://%[une émote aléatoire parmi les facepalm de Cow et d'Octophoque]//%
-				if(Math.random()>0.5){
-					message.channel.sendFile(config.imgs+"fp.png");
-				}else{
-					message.channel.sendFile(config.imgs+"facepalm.png");
-				}
+				message.channel.sendFile(config.imgs+((Math.random()<0.5) ? "fp.png" : "facepalm.png"));
 				deletion(message);break;
 			case "rage":case "jpp":case "enerve"://%[émote énervée par Cow]//%
 				message.channel.sendFile(config.imgs+"jpp.png");
@@ -204,6 +206,9 @@ bot.on("message", function(message){
 			case "chaton":case "chat":case "potitchat":case "potit_chat"://%[émote de potit chat]//%
 				message.channel.sendFile(config.imgs+"chaton.png");
 				deletion(message);break;
+			case "pig":case "cochon":case "pighero":case "herocochon"://%[émote cochon]//%
+				message.channel.sendFile(config.imgs+((Math.random()<0.9) ? "pigHero.png" : "pigHeroGlasses.png"));
+				deletion(message);break;
 //commandesbotbalise
 			default:if(message.author.id === "152901292090458113"){switch(commande){
 				case "allthinkings":
@@ -216,6 +221,7 @@ bot.on("message", function(message){
 						messagesAnalyses = 0;
 						if(!data.hasOwnProperty(message.channel.id)){data[message.channel.id]={"nbThinking":0,"nbThinkingReac":0,"lastMessageId":"0","nbMessages":0};}
 						message.channel.sendMessage("Début du scan...").then(function(messageLog){actualMessage=messageLog;compteurThinking(messageLog);},function(raison){console.log(raison);}).catch(console.error);
+						message.channel.sendFile(config.imgs+"littleCopter.gif");
 					} else {
 						message.channel.sendMessage("Désolé je suis en pleine introspection, veuillez réessayer dans quelques secondes.");
 					}
